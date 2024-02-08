@@ -34,8 +34,9 @@
             <tr>
                 <td>{{$count++}}</td>
                 <td>{{$blog->title}}</td>
-                <td>{{$blog->user_id}}</td>
-                <td>{{$blog->created_at}}</td>
+                <td>{{$blog->user->name}}</td>
+                {{-- <td>{{date('d-M-y',strtotime($blog->created_at))}}</td> --}}
+                <td>{{$blog->created_at->format('d-m-y')}}</td>
             </tr>
             @endforeach
          
