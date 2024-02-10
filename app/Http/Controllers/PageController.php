@@ -11,6 +11,13 @@ class PageController extends Controller
 {
     //
 
+    static function category(){
+
+        $categories=BlogCategory::all();
+
+        return $categories;
+    }
+
     public function index(){
 
         if(Auth::check()){
@@ -37,8 +44,17 @@ class PageController extends Controller
 
     public function create_blog(){
 
-        $categories=BlogCategory::all();
+        $categories=$this->category();
 
         return view('userpages.create_blog',compact('categories'));
+    }
+
+    public function edit_blog(Blog $id){
+
+        $blog=$id;
+
+        $categories=$this->category();
+
+        return view('userpages.edit_blog',compact('blog','categories'));
     }
 }

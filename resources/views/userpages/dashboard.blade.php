@@ -11,7 +11,7 @@
 
         @else
 
-        <table>
+        <table id="blogTable">
             <thead>
                 <tr>
                     <th>
@@ -20,6 +20,7 @@
                     <th>title</th>
                     <th>author</th>
                     <th>posted on</th>
+                    <th>Actions</th>
                 </tr>
                 
             </thead>
@@ -34,9 +35,20 @@
             <tr>
                 <td>{{$count++}}</td>
                 <td>{{$blog->title}}</td>
-                <td>{{$blog->user->name}}</td>
+                <td>{{ucfirst($blog->user->name)}}</td>
                 {{-- <td>{{date('d-M-y',strtotime($blog->created_at))}}</td> --}}
                 <td>{{$blog->created_at->format('d-m-y')}}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/blog/edit/{{$blog->id}}">Edit</a></li>
+                          <li><a class="dropdown-item" href="#">Delete</a></li>
+                        </ul>
+                      </div>
+                </td>
             </tr>
             @endforeach
          
@@ -48,4 +60,15 @@
     </table>
 </div>
 
+@endsection
+
+@section('scripts')
+
+<script>
+
+    $(document).ready( function () {
+    $('#blogTable').DataTable();
+} );
+
+</script>
 @endsection

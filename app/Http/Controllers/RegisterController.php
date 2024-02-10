@@ -13,7 +13,7 @@ class RegisterController extends Controller
 
     public function registerUser(Request $r){
 
-        $fields=$r->validate(['name'=>'required','email'=>'required','password'=>'required|min:4|confirmed']);
+        $fields=$r->validate(['name'=>'required','email'=>'unique:users,email|required','password'=>'required|min:4|confirmed']);
 
         $fields['password']=Hash::make($fields['password']);
         // dump('below is the request object');
@@ -30,6 +30,23 @@ class RegisterController extends Controller
             return back()->with('error',"user could not be registered {$e->getMessage()}");
 
         }
+
+    }
+
+
+    public function register_api(Request $r){
+
+        // dd('you are trying to register dude');
+        $r->validate(['name'=>'required','password'=>'required|confirmed','email'=>'required']);
+
+        $user=User::create($r->all());
+
+        $token=$user->createToken('scooby')->plainTextToken;
+
+        $response=['user'=>$user,'token'=>$token];
+
+        return response($response,201);
+
 
     }
 }

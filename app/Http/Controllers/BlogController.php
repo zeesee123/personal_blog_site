@@ -11,6 +11,17 @@ class BlogController extends Controller
 {
     //
 
+    static function userCheck($num){
+
+        if(auth()->user()->id===$num){
+
+            return true;
+
+        }
+
+        return false;
+    }
+
     static function BlogCheck($id){
 
         $flag=BlogCategory::find($id);
@@ -48,4 +59,39 @@ class BlogController extends Controller
         
         
     }
+
+
+    public function edit_blog(Request $r){
+
+        // dd('hey');
+
+       
+
+        $fields=$r->validate(['title'=>['required'],'body'=>['required'],'category'=>'required','id'=>'required']);
+
+        
+
+        try{
+
+            $blog=Blog::find($fields['id']);
+
+        if($this->userCheck($blog->user_id)){
+
+            $blog->update(['title'=>$r->title,'body'=>$r->body,'blog_category_id'=>$r->category]);
+
+            return back()->with('success','blog successfully updated');
+
+        }else{
+
+            return back()->with('error','there is something wrong');
+        }
+
+
+        }catch(Exception $e){
+
+            return back()->with('error',$e->getMessage());
+        }
+        }
+
+   
 }

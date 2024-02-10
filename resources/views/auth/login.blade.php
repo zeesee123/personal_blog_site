@@ -4,6 +4,17 @@
 
 <div class="row text-center">
 
+    @if(session('error'))
+
+    <div class="alert alert-danger">
+        
+        {{session('error')}}
+        
+    </div>
+    
+    
+    @endif
+
     <form action="/login" method="POST" class="mb-3">
 
         @csrf
