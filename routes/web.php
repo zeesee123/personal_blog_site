@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/create_blog',[BlogController::class,'create']);
     Route::get('/blog/edit/{id}',[PageController::class,'edit_blog']);
     Route::put('/edit_blog',[BlogController::class,'edit_blog']);
+    Route::post('/delete_blog',[BlogController::class,'delete_blog']);
+
+    Route::get('/view_blog/{blog}',[PageController::class,'view_blog']);
 });
 
 

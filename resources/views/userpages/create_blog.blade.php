@@ -4,15 +4,11 @@
 
 @if(session('success'))
 
-<div class="alert alert-success">
-           {{session('success')}}
-</div>
+<x-alert type="success" message="{{session('success')}}"  />
 
 @elseif(session('error'))
 
-<div class="alert alert-danger">
-{{session('error')}}
-</div>
+<x-alert type="danger" message="{{session('error')}}" />
 
 @else
 
@@ -73,6 +69,64 @@
 
     </div>
 
+    <div class="mb-3">
+    <label for="exampleDataList" class="form-label">Datalist example</label>
+<input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+<datalist id="datalistOptions">
+    @foreach($tags as $tag)
+  <option value="{{$tag->name}}">
+    @endforeach
+</datalist>
+</div>
+
+<div class="mb-3">
+    <div id="tags_disp" class="d-flex"></div>
+</div>
+
     <button>Post</button>
 </form>
+@endsection
+
+@section('scripts')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js" integrity="sha512-TToQDr91fBeG4RE5RjMl/tqNAo35hSRR4cbIFasiV2AAMQ6yKXXYhdSdEpUcRE6bqsTiB+FPLPls4ZAFMoK5WA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+
+let dl=document.querySelector('#exampleDataList');
+
+let tag_disp=document.querySelector('#tags_disp');
+
+console.log(dl);
+
+const remove=(a)=>{
+    
+    console.log(`remove ${a}`);
+}
+
+dl.addEventListener('keydown',(e)=>{
+
+    if(e.key=="Enter"){
+
+        e.preventDefault();
+
+        // tag_disp.innerHTML=`${dl.value}`;
+        let newEle=document.createElement('div');
+
+        newEle.innerHTML=`<div class="badge bg-primary mx-1">${dl.value}&nbsp;<span onClick='remove(this)'>X<span></div>`;
+
+        dl.value='';
+
+        
+        // console.log('this is the new element',newEle);
+        tag_disp.appendChild(newEle);
+
+        console.log('hello');
+    }
+
+
+});
+
+</script>
 @endsection

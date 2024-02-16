@@ -93,5 +93,32 @@ class BlogController extends Controller
         }
         }
 
+
+        public function delete_blog(Request $r){
+
+            $r->validate(['id'=>'required']);
+
+            try{
+                
+                if(auth()->user()->cannot('delete',Blog::find($r->id))){
+
+                    return response()->json(['status'=>'failure','message'=>'you cannot do that']);
+                }
+                
+                Blog::destroy($r->id);
+
+                return response()->json(['status'=>'success','message'=>'great terminator!!']);
+
+            }catch(Exception $e){
+
+                return response()->json(['status'=>'failure','message'=>$e->getMessage()]);
+
+
+            }
+
+
+
+        }
+
    
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Tags;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,9 @@ class PageController extends Controller
 
         $categories=$this->category();
 
-        return view('userpages.create_blog',compact('categories'));
+        $tags=Tags::all();
+
+        return view('userpages.create_blog',compact('categories','tags'));
     }
 
     public function edit_blog(Blog $id){
@@ -56,5 +59,14 @@ class PageController extends Controller
         $categories=$this->category();
 
         return view('userpages.edit_blog',compact('blog','categories'));
+    }
+
+
+    public function view_blog(Blog $blog){
+
+        // dd($blog);
+
+        return view('userpages.view_blog',compact('blog'));
+
     }
 }
