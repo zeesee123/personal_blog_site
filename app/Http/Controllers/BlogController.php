@@ -33,7 +33,13 @@ class BlogController extends Controller
 
         // dd('hello');
 
-        $fields=$r->validate(['title'=>'required','body'=>'required','category'=>'required']);
+        // dd($r);
+
+        $fields=$r->validate(['title'=>'required','body'=>'required','category'=>'required','selected_tags'=>'required']);
+
+        $tags=explode(',',$r->selected_tags);
+
+        // dd($tags);
 
         $check=$this->BlogCheck($r->category);
 

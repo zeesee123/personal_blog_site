@@ -26,7 +26,7 @@ use App\Http\Controllers\RegisterController;
 //     return view('welcome');
 // });
 
-Route::get('/',[PageController::class,'index']);
+Route::get('/',[PageController::class,'index'])->name('login');
 Route::post('/login',[AuthController::class,'login']);
 
 Route::middleware(['guest'])->group(function(){

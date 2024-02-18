@@ -71,7 +71,7 @@
 
     <div class="mb-3">
     <label for="exampleDataList" class="form-label">Datalist example</label>
-<input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+<input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." autocomplete="off">
 <datalist id="datalistOptions">
     @foreach($tags as $tag)
   <option value="{{$tag->name}}">
@@ -79,9 +79,13 @@
 </datalist>
 </div>
 
+<input type="hidden" id="hid_input" name="selected_tags">
+
 <div class="mb-3">
     <div id="tags_disp" class="d-flex"></div>
 </div>
+
+
 
     <button>Post</button>
 </form>
@@ -98,23 +102,70 @@ let dl=document.querySelector('#exampleDataList');
 
 let tag_disp=document.querySelector('#tags_disp');
 
+let hid_input=document.querySelector('#hid_input');
+
+let tag_array=[];
+
+let c=0;
+
 console.log(dl);
 
 const remove=(a)=>{
+
+    c--;
     
+    if(c<0){
+
+        return;
+    }
+    
+    tag_array.pop();
+
+    console.log(tag_array);
+
+    hid_input.value=tag_array.join(',');
+
     console.log(`remove ${a}`);
+    //remove element function helps in removing a dom element
+
+    a.parentNode.remove();
 }
 
 dl.addEventListener('keydown',(e)=>{
+
+    
+
+    
 
     if(e.key=="Enter"){
 
         e.preventDefault();
 
+        if(dl.value.trim()===''){
+        return;}
+    
+        console.log('this is the value of c',c);
+
+        
+
+        if(c==5){
+            return;
+        }
+
+        c++;
+
+        
+
         // tag_disp.innerHTML=`${dl.value}`;
         let newEle=document.createElement('div');
 
-        newEle.innerHTML=`<div class="badge bg-primary mx-1">${dl.value}&nbsp;<span onClick='remove(this)'>X<span></div>`;
+        newEle.innerHTML=`<div class="badge bg-primary mx-1">${dl.value}&nbsp;<span onClick='remove(this)' style='cursor:pointer'>&times;<span></div>`;
+
+        tag_array.push(dl.value);
+
+        hid_input.value=tag_array.join(',');
+
+        console.log('this is the tag array',tag_array);
 
         dl.value='';
 
