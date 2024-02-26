@@ -70,8 +70,11 @@
     </div>
 
     <div class="mb-3">
-    <label for="exampleDataList" class="form-label">Datalist example</label>
+    <label for="exampleDataList" class="form-label">Enter tags</label>
 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." autocomplete="off">
+<div id="erra">
+
+</div>
 <datalist id="datalistOptions">
     @foreach($tags as $tag)
   <option value="{{$tag->name}}">
@@ -100,11 +103,23 @@
 
 let dl=document.querySelector('#exampleDataList');
 
+let er_mess=document.querySelector('#erra');
+
 let tag_disp=document.querySelector('#tags_disp');
 
 let hid_input=document.querySelector('#hid_input');
 
 let tag_array=[];
+
+let exist_tags=[];
+
+@foreach($tags as $tag)
+
+exist_tags.push('{{$tag->name}}');
+
+@endforeach
+
+console.log('exist tags',exist_tags);
 
 let c=0;
 
@@ -154,6 +169,17 @@ dl.addEventListener('keydown',(e)=>{
 
         c++;
 
+
+        if(!exist_tags.includes(dl.value.trim())){
+            
+            er_mess.innerHTML=`<span class="text-danger">please use predefined tags</span>`;
+
+            return;
+
+        }else{
+
+            er_mess.innerHTML='';
+        }
         
 
         // tag_disp.innerHTML=`${dl.value}`;

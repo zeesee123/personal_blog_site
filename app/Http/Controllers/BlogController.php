@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Tag;
 use App\Models\Blog;
+
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 
@@ -22,6 +24,34 @@ class BlogController extends Controller
         return false;
     }
 
+
+    static function tagCheck($arr){
+
+        $tags=Tag::all(); //this gives me the entire model instance
+
+        $tags=$tags->pluck('name')->toArray();
+
+        $newArray=[];
+
+        foreach($arr as $ar){
+           
+            if(in_array($ar,$tags)){
+
+                $tag=Tag::where('name',$ar)->first();
+
+                // array_push($tag->id,$newArray);
+                $newArray[]=$tag->id;
+               
+            }else{
+
+                return false;
+            }
+            
+        }
+
+        return $newArray;
+    }
+
     static function BlogCheck($id){
 
         $flag=BlogCategory::find($id);
@@ -37,7 +67,18 @@ class BlogController extends Controller
 
         $fields=$r->validate(['title'=>'required','body'=>'required','category'=>'required','selected_tags'=>'required']);
 
-        $tags=explode(',',$r->selected_tags);
+        $tas=explode(',',$r->selected_tags);
+
+        $ar=[];
+
+        if(!$this->tagCheck($tas)){
+
+            return back()->with('error','tags are not right');
+
+        }else{
+
+             $ar=$this->tagCheck($tas);
+        }
 
         // dd($tags);
 
@@ -48,6 +89,8 @@ class BlogController extends Controller
             if($check){
 
                 $blog=Blog::create(['title'=>$r->title,'body'=>$r->body,'blog_category_id'=>$r->category,'user_id'=>auth()->user()->id]);
+
+                $blog->tags()->attach($ar);
     
                 return back()->with('success','Blog successfully created');
             

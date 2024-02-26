@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Blog;
 use App\Models\Tags;
 use App\Models\BlogCategory;
@@ -47,7 +48,7 @@ class PageController extends Controller
 
         $categories=$this->category();
 
-        $tags=Tags::all();
+        $tags=Tag::all();
 
         return view('userpages.create_blog',compact('categories','tags'));
     }
@@ -65,8 +66,9 @@ class PageController extends Controller
     public function view_blog(Blog $blog){
 
         // dd($blog);
+        $comments=$blog->comments()->get();
 
-        return view('userpages.view_blog',compact('blog'));
+        return view('userpages.view_blog',compact('blog','comments'));
 
     }
 }

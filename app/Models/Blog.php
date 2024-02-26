@@ -20,4 +20,15 @@ class Blog extends Model
 
         return $this->belongsTo(BlogCategory::class,'blog_category_id');
     }
+
+    public function tags(){
+
+        // return $this->belongsToMany(Tag::class,'blog_tags');
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function comments(){
+
+        return $this->hasMany(Comment::class);
+    }
 }
